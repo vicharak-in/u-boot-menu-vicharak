@@ -6,6 +6,7 @@ Vcs-Git: https://github.com/suihkulokki/u-boot-menu
 Vcs-Browser: https://github.com/suihkulokki/u-boot-menu
 Homepage: https://github.com/suihkulokki/u-boot-menu
 Maintainer: Riku Voipio <riku.voipio@linaro.org>
+Uploaders: Jonas Smedegaard <dr@jones.dk>
 Build-Depends: debhelper (>= 10)
 
 Package: u-boot-menu
