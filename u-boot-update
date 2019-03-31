@@ -133,13 +133,16 @@ timeout ${U_BOOT_TIMEOUT}
 # Find linux versions
 _VERSIONS="$(linux-version list | linux-version sort --reverse)"
 
+# Find boot directory as seen in u-boot, and path prefix while in linux
 if [ "$(stat --printf %d /)" = "$(stat --printf %d /boot)" ]
 then
 	# / and /boot are on the same filesystem
 	_BOOT_DIRECTORY="/boot"
+	_BOOT_PATH=""
 else
 	# / and /boot are not on the same filesystem
 	_BOOT_DIRECTORY=""
+	_BOOT_PATH="/boot"
 fi
 
 
@@ -156,10 +159,10 @@ do
 	else
 		_INITRD=""
 	fi
-	if [ -e ${U_BOOT_FDT_DIR}${_VERSION}/${U_BOOT_FDT} ] && [ -n "${U_BOOT_FDT}" ]
+	if [ -e ${_BOOT_PATH}${U_BOOT_FDT_DIR}${_VERSION}/${U_BOOT_FDT} ] && [ -n "${U_BOOT_FDT}" ]
 	then
 		_FDT="fdt ${U_BOOT_FDT_DIR}${_VERSION}/${U_BOOT_FDT}"
-	elif [ -d ${U_BOOT_FDT_DIR}${_VERSION}/ ]
+	elif [ -d ${_BOOT_PATH}${U_BOOT_FDT_DIR}${_VERSION}/ ]
 	then
 		_FDT="fdtdir ${U_BOOT_FDT_DIR}${_VERSION}/"
 	else
