@@ -1,3 +1,28 @@
+u-boot-menu (3) unstable; urgency=medium
+
+  * Fix account for boot on separate partition
+    when resolving fdt or fdtdir.
+    Closes: Bug#868454. Thanks to Diego Roversi.
+  * Try resolve U_BOOT_FDT or flash-boot paths in /boot
+    if U_BOOT_FDT_DIR is set to its default.
+    Suggest flash-kernel, and mention its use in long desctiption.
+    Closes: Bug#926126. Thanks to Diego Roversi.
+  * Fix install /etc/default/u-boot,
+    with all options at default values and commented out.
+    Closes: Bug#926127. Thanks to Diego Roversi.
+  * Fix set U_BOOT_PARAMETERS to "ro quiet" (not empty) by default.
+    Closes: Bug#908590.
+  * Use linux cmdline argument "single" in recovery mode
+    (not systemd-specific "systemd.unit=rescue.target").
+    Closes: Bug#884748. Thanks to Adam Borowski.
+  * Add myself as uploader.
+  * Update Vcs-* fields: Maintenance moved to salsa.
+  * Declare compliance with Debian Policy 4.3.0.
+  * Set Rules-Requires-Root: no.
+  * Update copyright info: Extend coverage.
+
+ -- Jonas Smedegaard <dr@jones.dk>  Sun, 31 Mar 2019 22:54:03 +0200
+
 u-boot-menu (2) unstable; urgency=medium
 
   [ Vagrant Cascadian ]
