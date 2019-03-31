@@ -6,10 +6,12 @@ Source: https://github.com/suihkulokki/u-boot-menu
 Files: *
 Copyright: 2006-2012, Daniel Baumann <daniel.baumann@progress-technologies.net>
            2016-2017, Riku Voipio <riku.voipio@linaro.org>
+           2019, Jonas Smedegaard <dr@jones.dk>
 License: GPL-2+
 
 Files: debian/*
 Copyright: 2017, Riku Voipio <riku.voipio@linaro.org>
+           2019, Jonas Smedegaard <dr@jones.dk>
 License: GPL-2+
 
 License: GPL-2+
