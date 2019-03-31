@@ -10,8 +10,12 @@ Build-Depends: debhelper (>= 10)
 
 Package: u-boot-menu
 Depends: linux-base, ${misc:Depends}
+Suggests: flash-kernel
 Architecture: all
 Description: u-boot menu update
  Automatically create extlinux-style boot menu for u-boot. Boot menu
  entries are automatically created for every kernel package when they are
  installed.
+ .
+ When /boot is on a separate partition, the package flash-kernel may help
+ ensure that device-tree (dtb) files are made available to u-boot.
