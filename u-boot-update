@@ -199,7 +199,7 @@ label l${_NUMBER}r
 	linux ${_BOOT_DIRECTORY}/vmlinuz-${_VERSION}
 	${_INITRD}
 	${_FDT}
-	append ${U_BOOT_ROOT} $(echo ${U_BOOT_PARAMETERS} | sed -e 's| quiet||') systemd.unit=rescue.target
+	append ${U_BOOT_ROOT} $(echo ${U_BOOT_PARAMETERS} | sed -e 's| quiet||') single
 	"
 
 	fi
