@@ -8,6 +8,7 @@ Homepage: https://github.com/suihkulokki/u-boot-menu
 Maintainer: Riku Voipio <riku.voipio@linaro.org>
 Uploaders: Jonas Smedegaard <dr@jones.dk>
 Build-Depends: debhelper (>= 10)
+Rules-Requires-Root: no
 
 Package: u-boot-menu
 Depends: linux-base, ${misc:Depends}
