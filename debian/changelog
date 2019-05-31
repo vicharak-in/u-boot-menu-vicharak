@@ -1,3 +1,13 @@
+u-boot-menu (4) unstable; urgency=medium
+
+  * Add git-buildpackage config:
+    + Sign tags.
+    + Use DEP-14 vendor-namespaced git branch naming.
+  * Fix avoid hardcoding vmlinuz as kernel stem.
+    Closes: Bug#928735. Thanks to Vagrant Cascadian.
+
+ -- Jonas Smedegaard <dr@jones.dk>  Fri, 31 May 2019 08:53:57 +0200
+
 u-boot-menu (3) unstable; urgency=medium
 
   * Fix account for boot on separate partition
