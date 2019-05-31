@@ -132,7 +132,7 @@ timeout ${U_BOOT_TIMEOUT}
 "
 
 # Find linux versions
-_VERSIONS="$(linux-version list | linux-version sort --reverse)"
+_KERNELS=$(linux-version list --paths | linux-version sort --reverse | sed -e 's,.*/boot/,,g')
 
 # Find boot directory as seen in u-boot, and path prefix while in linux
 if [ "$(stat --printf %d /)" = "$(stat --printf %d /boot)" ]
@@ -147,9 +147,11 @@ else
 fi
 
 
-for _VERSION in ${_VERSIONS}
+for _KERNEL in ${_KERNELS}
 do
-	echo "P: Writing config for /boot/vmlinuz-${_VERSION}..."
+	# Strip kernel prefix to derive version.
+	_VERSION=${_KERNEL#*-}
+	echo "P: Writing config for ${_KERNEL}..."
 
 	_NUMBER="${_NUMBER:-0}"
 	_ENTRY="${_ENTRY:-1}"
@@ -181,7 +183,7 @@ do
 
 label l${_NUMBER}
 	menu label ${U_BOOT_MENU_LABEL} ${_VERSION}
-	linux ${_BOOT_DIRECTORY}/vmlinuz-${_VERSION}
+	linux ${_BOOT_DIRECTORY}/${_KERNEL}
 	${_INITRD}
 	${_FDT}
 	append ${U_BOOT_ROOT} ${U_BOOT_PARAMETERS}"
@@ -196,7 +198,7 @@ label l${_NUMBER}
 
 label l${_NUMBER}r
 	menu label ${U_BOOT_MENU_LABEL} ${_VERSION} (rescue target)
-	linux ${_BOOT_DIRECTORY}/vmlinuz-${_VERSION}
+	linux ${_BOOT_DIRECTORY}/${_KERNEL}
 	${_INITRD}
 	${_FDT}
 	append ${U_BOOT_ROOT} $(echo ${U_BOOT_PARAMETERS} | sed -e 's| quiet||') single
