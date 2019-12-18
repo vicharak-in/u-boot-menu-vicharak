@@ -1,3 +1,12 @@
+u-boot-menu (4.0.1) unstable; urgency=medium
+
+  * fix support U_BOOT_MENU_LABEL;
+    closes: bug#930395, thanks to Steev Klimaszewski
+  * fix skip commented-out fstab entry;
+    closes: bug#946950, thanks to Andrei POPESCU
+
+ -- Jonas Smedegaard <dr@jones.dk>  Wed, 18 Dec 2019 13:47:55 +0100
+
 u-boot-menu (4) unstable; urgency=medium
 
   * Add git-buildpackage config:
