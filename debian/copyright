@@ -7,6 +7,7 @@ Files: *
 Copyright: 2006-2012, Daniel Baumann <daniel.baumann@progress-technologies.net>
            2016-2017, Riku Voipio <riku.voipio@linaro.org>
            2019, Jonas Smedegaard <dr@jones.dk>
+           2019-2020 Vagrant Cascadian <vagrant@debian.org>
 License: GPL-2+
 
 Files: debian/*

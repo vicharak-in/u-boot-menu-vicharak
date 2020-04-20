@@ -1,3 +1,10 @@
+u-boot-menu (4.0.2) UNRELEASED; urgency=medium
+
+  * Install example script for syncing .dtb files for systems with a split
+    /boot partition.
+
+ -- Vagrant Cascadian <vagrant@debian.org>  Sun, 19 Apr 2020 17:09:39 -0700
+
 u-boot-menu (4.0.1) unstable; urgency=medium
 
   * fix support U_BOOT_MENU_LABEL;
