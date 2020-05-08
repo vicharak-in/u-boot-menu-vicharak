@@ -94,10 +94,13 @@ read _FS_SPEC _FS_FILE _FS_VFSTYPE _FS_MNTOPS _FS_FREQ _FS_PASSNO << EOF
 ${_LINE}
 EOF
 
-		if [ "${_FS_SPEC}" != "#"* ] && [ "${_FS_FILE}" = "/" ]
+		if [ "${_FS_FILE}" = "/" ]
 		then
-			U_BOOT_ROOT="root=${_FS_SPEC}"
-			break
+			case "${_FS_SPEC}" in
+				"#"*) ;;
+				*) U_BOOT_ROOT="root=${_FS_SPEC}"
+				   break ;;
+			esac
 		fi
 	done < /etc/fstab
 fi
