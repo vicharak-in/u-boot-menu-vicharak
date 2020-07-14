@@ -71,6 +71,16 @@ Values are in decisecond greater than 0
 0 specifies to wait forever.
 The default is 50.
 
+.IP "U_BOOT_FDT_DIR=""\fB/usr/lib/linux-image-\fR""" 4
+This variable specifies the unversioned stem of paths
+where U\-BOOT should look for the flattened device tree binaries.
+Default is '/usr/lib/linux-image-'.
+
+.IP "U_BOOT_FDT=""device-tree.dtb""" 4
+This variable specifies filename or trailing part of path
+for a single device tree binary.
+Default is 'device-tree.dtb'.
+
 .SH FILES
 /etc/default/u-boot
 
