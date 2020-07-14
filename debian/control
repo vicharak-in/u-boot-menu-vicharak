@@ -7,7 +7,7 @@ Vcs-Browser: https://salsa.debian.org/debian/u-boot-menu
 Homepage: https://github.com/suihkulokki/u-boot-menu
 Maintainer: Riku Voipio <riku.voipio@linaro.org>
 Uploaders: Jonas Smedegaard <dr@jones.dk>
-Build-Depends: debhelper (>= 10)
+Build-Depends: debhelper-compat (= 13)
 Rules-Requires-Root: no
 
 Package: u-boot-menu
