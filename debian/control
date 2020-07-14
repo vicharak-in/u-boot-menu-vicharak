@@ -1,7 +1,7 @@
 Source: u-boot-menu
 Section: admin
 Priority: optional
-Standards-Version: 4.3.0
+Standards-Version: 4.5.0
 Vcs-Git: https://salsa.debian.org/debian/u-boot-menu.git
 Vcs-Browser: https://salsa.debian.org/debian/u-boot-menu
 Homepage: https://github.com/suihkulokki/u-boot-menu
