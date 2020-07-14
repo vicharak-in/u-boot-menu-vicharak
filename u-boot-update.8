@@ -11,6 +11,30 @@ u\-boot\-update is a tool used to generate the menu files
 used by the U\-BOOT bootloader.
 Options can be configured in /etc/default/u\-boot.
 
+.PP
+
+For each <version> of linux kernel installed,
+menu items for each of <U_BOOT_ALTERNATIVES> are generated
+for the first valid entry among these:
+
+.IP \[bu] 2
+fdt <U_BOOT_FDT_DIR><version>/<U_BOOT_FDT>
+.IP \[bu]
+fdtdir <U_BOOT_FDT_DIR><version>/
+.IP \[bu] 2
+fdt /<U_BOOT_FDT>
+.IP \[bu]
+fdt /dtb-<version>
+
+.PP
+Paths without <U_BOOT_FDT_DIR> are considered
+only when <U_BOOT_FDT_DIR> is left at its default value.
+
+.PP
+When root (\fB/\fR) and boot (\fB/boot\fR) are mounted on separate filesystems,
+paths are examined with \fB/boot\fR prepended
+(i.e. variables should be defined without it).
+
 .SH OPTIONS
 
 .IP "U_BOOT_UPDATE=""\fBtrue\fR|false""" 4
