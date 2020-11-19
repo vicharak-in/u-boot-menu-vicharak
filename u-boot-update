@@ -49,6 +49,16 @@ then
 	. /etc/default/u-boot
 fi
 
+# Reading the os-release file
+if [ -e /etc/os-release ]
+then
+	. /etc/os-release
+elif [ -e /usr/lib/os-release ]
+then
+	. /usr/lib/os-release
+fi
+
+
 U_BOOT_UPDATE="${U_BOOT_UPDATE:-true}"
 
 if [ "${U_BOOT_UPDATE}" != "true" ]
@@ -79,7 +89,7 @@ U_BOOT_ALTERNATIVES="${U_BOOT_ALTERNATIVES:-default recovery}"
 U_BOOT_DEFAULT="${U_BOOT_DEFAULT:-l0}"
 U_BOOT_ENTRIES="${U_BOOT_ENTRIES:-all}"
 U_BOOT_TIMEOUT="${U_BOOT_TIMEOUT:-50}"
-U_BOOT_MENU_LABEL="${U_BOOT_MENU_LABEL:-Debian GNU/Linux kernel}"
+U_BOOT_MENU_LABEL="${U_BOOT_MENU_LABEL:-${PRETTY_NAME:-Debian GNU/Linux kernel}}"
 U_BOOT_PARAMETERS="${U_BOOT_PARAMETERS:-ro quiet}"
 U_BOOT_FDT_DIR="${U_BOOT_FDT_DIR:-/usr/lib/linux-image-}"
 

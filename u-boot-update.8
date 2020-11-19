@@ -19,7 +19,7 @@ This variable specifies the default entry to boot. The name of an entry consists
 .IP "U_BOOT_ENTRIES=""\fBall\fR""" 4
 This variables specifies how many kernel versions should be used to populate the boot configuration. Value is an integer starting with 1, or 'all' to populate for all kernels, default is 'all'.
 .IP "U_BOOT_MENU_LABEL=""\fBDebian GNU/Linux, kernel\fR""" 4
-This variable specifies the text that is used as a description in the boot menu. Value is an arbitrary string. If lsb_release is installed, the distributors id is automatically determined. If lsb_release is not available, it defaults to 'Debian GNU/Linux, kernel'.
+This variable specifies the text that is used as a description in the boot menu. Value is an arbitrary string. If not specified, PRETTY_NAME from /etc/os\-release is used. Otherwise, it defaults to 'Debian GNU/Linux, kernel'.
 .IP "U_BOOT_PARAMETERS=""\fBro quiet\fR""" 4
 This variable specifies additional boot parameters that are appended to each kernel entry. Value is an arbitrary string, default is 'ro quiet' (except for recovery entries, where quiet is avoided).
 .IP "U_BOOT_ROOT=""\fBroot\fR=\fIDEVICE\fR""" 4
