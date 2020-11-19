@@ -1,3 +1,17 @@
+u-boot-menu (4.0.3) unstable; urgency=medium
+
+  [ Dimitri John Ledkov ]
+  * u-boot-update: use PRETTY_NAME from os-release as menu label.
+
+  [ Jonas Smedegaard ]
+  * fix typo in code comment, thanks to Peter Geis
+  * document U_BOOT_FDT_DIR and U_BOOT_FDT in man page;
+    closes: bug#946971, thanks to Peter Geis and Andrei Popescu
+  * document resolving of menu items from U_BOOT_FDT_DIR and U_BOOT_FDT
+  * declare compliance with Debian Policy 4.5.1
+
+ -- Jonas Smedegaard <dr@jones.dk>  Thu, 19 Nov 2020 13:42:40 +0100
+
 u-boot-menu (4.0.2) unstable; urgency=medium
 
   [ Vagrant Cascadian ]
