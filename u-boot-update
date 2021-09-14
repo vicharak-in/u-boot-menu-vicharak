@@ -99,11 +99,20 @@ U_BOOT_DEFAULT="${U_BOOT_DEFAULT:-l0}"
 U_BOOT_ENTRIES="${U_BOOT_ENTRIES:-all}"
 U_BOOT_TIMEOUT="${U_BOOT_TIMEOUT:-50}"
 U_BOOT_MENU_LABEL="${U_BOOT_MENU_LABEL:-${PRETTY_NAME:-Debian GNU/Linux kernel}}"
-U_BOOT_PARAMETERS="${U_BOOT_PARAMETERS:-ro quiet}"
 U_BOOT_FDT_DIR="${U_BOOT_FDT_DIR:-/usr/lib/linux-image-}"
 U_BOOT_FDT_OVERLAYS="${U_BOOT_FDT_OVERLAYS:-}"
 U_BOOT_FDT_OVERLAYS_DIR="${U_BOOT_FDT_OVERLAYS_DIR:-/boot/dtbo}"
 U_BOOT_INITRD="${U_BOOT_INITRD:-initrd.img}"
+
+if [ -z "${U_BOOT_PARAMETERS}" ] && [ -f /etc/kernel/cmdline ]
+then
+	U_BOOT_PARAMETERS="$(cat /etc/kernel/cmdline | sed -e 's/root=[^[:space:]]*//' -e 's/^[[:space:]]*//')"
+	if [ -z "${U_BOOT_ROOT}" ]
+	then
+		U_BOOT_ROOT="$(cat /etc/kernel/cmdline | sed -re 's/.*(root=[^[:space:]]*).*/\1/')"
+	fi
+fi
+U_BOOT_PARAMETERS="${U_BOOT_PARAMETERS:-ro quiet}"
 
 # Find parameter for root from fstab
 if [ -z "${U_BOOT_ROOT}" ]

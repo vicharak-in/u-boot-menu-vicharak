@@ -90,9 +90,10 @@ Otherwise, it defaults to 'Debian GNU/Linux, kernel'.
 .IP "U_BOOT_PARAMETERS=""\fBro quiet\fR""" 4
 This variable specifies additional boot parameters
 that are appended to each kernel entry.
-Value is an arbitrary string,
-default is 'ro quiet'
-(except for recovery entries, where quiet is avoided).
+Value is an arbitrary string, default is the contents
+of /etc/kernel/cmdline, or 'ro quiet' (except for recovery
+entries, where quiet is avoided) if
+this file is not present or empty.
 
 .IP "U_BOOT_ROOT=""\fBroot\fR=\fIDEVICE\fR""" 4
 This variable specifies the root partition.
