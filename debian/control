@@ -6,12 +6,16 @@ Vcs-Git: https://salsa.debian.org/debian/u-boot-menu.git
 Vcs-Browser: https://salsa.debian.org/debian/u-boot-menu
 Homepage: https://github.com/suihkulokki/u-boot-menu
 Maintainer: Jonas Smedegaard <dr@jones.dk>
-Build-Depends: debhelper-compat (= 13)
+Build-Depends:
+ debhelper-compat (= 13),
 Rules-Requires-Root: no
 
 Package: u-boot-menu
-Depends: linux-base, ${misc:Depends}
-Suggests: flash-kernel
+Depends:
+ linux-base,
+ ${misc:Depends},
+Suggests:
+ flash-kernel,
 Architecture: all
 Description: u-boot menu update
  Automatically create extlinux-style boot menu for u-boot. Boot menu
