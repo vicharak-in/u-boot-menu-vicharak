@@ -1,7 +1,7 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: u-boot-menu
-Upstream-Contact: Riku Voipio <riku.voipio@linaro.org>
-Source: https://github.com/suihkulokki/u-boot-menu
+Upstream-Contact: https://bugs.debian.org/cgi-bin/pkgreport.cgi?pkg=u-boot-menu
+Source: https://salsa.debian.org/debian/u-boot-menu
 
 Files: *
 Copyright:
