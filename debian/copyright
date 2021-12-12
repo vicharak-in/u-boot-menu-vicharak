@@ -4,15 +4,17 @@ Upstream-Contact: Riku Voipio <riku.voipio@linaro.org>
 Source: https://github.com/suihkulokki/u-boot-menu
 
 Files: *
-Copyright: 2006-2012, Daniel Baumann <daniel.baumann@progress-technologies.net>
-           2016-2017, Riku Voipio <riku.voipio@linaro.org>
-           2019-2020, Jonas Smedegaard <dr@jones.dk>
-           2019-2020 Vagrant Cascadian <vagrant@debian.org>
+Copyright:
+  2006-2012  Daniel Baumann <daniel.baumann@progress-technologies.net>
+  2019-2020  Jonas Smedegaard <dr@jones.dk>
+  2016-2017  Riku Voipio <riku.voipio@linaro.org>
+  2019-2020  Vagrant Cascadian <vagrant@debian.org>
 License: GPL-2+
 
 Files: debian/*
-Copyright: 2017, Riku Voipio <riku.voipio@linaro.org>
-           2019, Jonas Smedegaard <dr@jones.dk>
+Copyright:
+  2019-2021  Jonas Smedegaard <dr@jones.dk>
+  2017       Riku Voipio <riku.voipio@linaro.org>
 License: GPL-2+
 
 License: GPL-2+
