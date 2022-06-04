@@ -105,6 +105,15 @@ This variable specifies filename or trailing part of path
 for a single device tree binary.
 Default is 'device-tree.dtb'.
 
+.IP "U_BOOT_INITRD=""\fBinitrd.img\fR""" 4
+This variable specifies the unversioned stem of initramfs filename.
+If versioned filename exists (e.g. 'initrd.img-5.10.0-8-armmp-lpae')
+then this filename set as option 'initrd',
+otherwise if unversioned filename exists (e.g. 'initrd.img)
+then that is set as option 'initrd',
+otherwise option 'initrd' is not set.
+Default is 'initrd.img'.
+
 .SH FILES
 /etc/default/u-boot
 

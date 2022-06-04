@@ -92,6 +92,7 @@ U_BOOT_TIMEOUT="${U_BOOT_TIMEOUT:-50}"
 U_BOOT_MENU_LABEL="${U_BOOT_MENU_LABEL:-${PRETTY_NAME:-Debian GNU/Linux kernel}}"
 U_BOOT_PARAMETERS="${U_BOOT_PARAMETERS:-ro quiet}"
 U_BOOT_FDT_DIR="${U_BOOT_FDT_DIR:-/usr/lib/linux-image-}"
+U_BOOT_INITRD="${U_BOOT_INITRD:-initrd.img}"
 
 # Find parameter for root from fstab
 if [ -z "${U_BOOT_ROOT}" ]
@@ -169,9 +170,12 @@ do
 	_NUMBER="${_NUMBER:-0}"
 	_ENTRY="${_ENTRY:-1}"
 
-	if [ -e /boot/initrd.img-${_VERSION} ]
+	if [ -e /boot/${U_BOOT_INITRD}-${_VERSION} ]
 	then
-		_INITRD="initrd ${_BOOT_DIRECTORY}/initrd.img-${_VERSION}"
+		_INITRD="initrd ${_BOOT_DIRECTORY}/${U_BOOT_INITRD}-${_VERSION}"
+	elif [ -e /boot/${U_BOOT_INITRD} ]
+	then
+		_INITRD="initrd ${_BOOT_DIRECTORY}/${U_BOOT_INITRD}"
 	else
 		_INITRD=""
 	fi
