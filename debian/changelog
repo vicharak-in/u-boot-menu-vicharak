@@ -1,3 +1,15 @@
+u-boot-menu (4.0.5) unstable; urgency=medium
+
+  * support configurable initrd filename stem
+    with variable U_BOOT_INITRD,
+    and use unversioned initrd as fallback to versioned;
+    closes: bug#1006668, thanks to Undef and Arnaud Ferraris
+  * declare compliance with Debian Policy 4.6.1
+  * update header and credit in man page
+  * update copyright info: update coverage
+
+ -- Jonas Smedegaard <dr@jones.dk>  Sat, 04 Jun 2022 17:15:39 +0200
+
 u-boot-menu (4.0.4) unstable; urgency=medium
 
   * taking over as maintainer;
