@@ -1,3 +1,14 @@
+u-boot-menu (4.1.0) unstable; urgency=medium
+
+  * tighten quoting in shell code, thanks to shellcheck
+  * use POSIX shell (not bash)
+  * set shell option explicitly (not in shebang)
+  * support fdtoverlays command
+    with variables U_BOOT_FDT_OVERLAYS U_BOOT_FDT_OVERLAYS_DIR;
+    closes: bug#1013150, thanks to Alexandre Viard
+
+ -- Jonas Smedegaard <dr@jones.dk>  Fri, 17 Jun 2022 22:40:29 +0200
+
 u-boot-menu (4.0.5) unstable; urgency=medium
 
   * support configurable initrd filename stem
