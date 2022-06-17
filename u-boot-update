@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 ## Copyright (C) 2006-2012 Daniel Baumann <daniel.baumann@progress-technologies.net>
 ## Copyright (C) 2016-2017 Riku Voipio    <riku.voipio@linaro.org>
@@ -69,14 +69,14 @@ then
 fi
 
 # Checking extlinux directory
-echo -n "P: Checking for EXTLINUX directory..."
+printf '%s' "P: Checking for EXTLINUX directory..."
 
 # Creating extlinux directory
 if [ ! -e "${_U_BOOT_DIRECTORY}" ]
 then
 	echo " not found."
 
-	echo -n "P: Creating EXTLINUX directory..."
+	printf '%s' "P: Creating EXTLINUX directory..."
 	mkdir -p "${_U_BOOT_DIRECTORY}"
 	echo " done: ${_U_BOOT_DIRECTORY}"
 else
@@ -121,11 +121,12 @@ if [ -z "${U_BOOT_ROOT}" ]
 then
 	for param in $(cat /proc/cmdline)
 	do
-		if [[ $param == root=* ]]
-		then
+		case $param in
+		  root=*)
 			U_BOOT_ROOT="$param"
 			break
-		fi
+			;;
+		esac
 	done
 fi
 
