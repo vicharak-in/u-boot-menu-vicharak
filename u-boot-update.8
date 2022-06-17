@@ -105,6 +105,16 @@ This variable specifies filename or trailing part of path
 for a single device tree binary.
 Default is 'device-tree.dtb'.
 
+.IP "U_BOOT_FDT_OVERLAYS_DIR=""\fB/boot/dtbo\fR""" 4
+This variable specifies the unversioned stem of paths
+where U\-BOOT should look for the flattened device tree overlays binaries.
+Default is '/boot/dtbo/'.
+
+.IP "U_BOOT_FDT_OVERLAYS=""device-tree.dtbo""" 4
+This variable specifies filenames or trailing part of path
+for device tree overlay binaries.
+Default is not set.
+
 .IP "U_BOOT_INITRD=""\fBinitrd.img\fR""" 4
 This variable specifies the unversioned stem of initramfs filename.
 If versioned filename exists (e.g. 'initrd.img-5.10.0-8-armmp-lpae')
