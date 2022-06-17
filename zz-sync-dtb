@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh
 
 ## Copyright 2019-2020 Vagrant Cascadian <vagrant@debian.org>
 
@@ -10,6 +10,8 @@
 # sync .dtb files into /boot to simplify installations on systems with
 # a split /boot partition.  To use, install this file into
 # /etc/kernel/postinst.d/zz-sync-dtb and mark it as executable.
+
+set -e
 
 version="$1"
 
