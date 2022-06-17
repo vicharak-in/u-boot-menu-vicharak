@@ -119,7 +119,7 @@ fi
 # if not in fstab, try from current kernel arguments
 if [ -z "${U_BOOT_ROOT}" ]
 then
-	for param in `cat /proc/cmdline`
+	for param in $(cat /proc/cmdline)
 	do
 		if [[ $param == root=* ]]
 		then
@@ -170,19 +170,19 @@ do
 	_NUMBER="${_NUMBER:-0}"
 	_ENTRY="${_ENTRY:-1}"
 
-	if [ -e /boot/${U_BOOT_INITRD}-${_VERSION} ]
+	if [ -e "/boot/${U_BOOT_INITRD}-${_VERSION}" ]
 	then
 		_INITRD="initrd ${_BOOT_DIRECTORY}/${U_BOOT_INITRD}-${_VERSION}"
-	elif [ -e /boot/${U_BOOT_INITRD} ]
+	elif [ -e "/boot/${U_BOOT_INITRD}" ]
 	then
 		_INITRD="initrd ${_BOOT_DIRECTORY}/${U_BOOT_INITRD}"
 	else
 		_INITRD=""
 	fi
-	if [ -e ${_BOOT_PATH}${U_BOOT_FDT_DIR}${_VERSION}/${U_BOOT_FDT} ] && [ -n "${U_BOOT_FDT}" ]
+	if [ -e "${_BOOT_PATH}${U_BOOT_FDT_DIR}${_VERSION}/${U_BOOT_FDT}" ] && [ -n "${U_BOOT_FDT}" ]
 	then
 		_FDT="fdt ${U_BOOT_FDT_DIR}${_VERSION}/${U_BOOT_FDT}"
-	elif [ -d ${_BOOT_PATH}${U_BOOT_FDT_DIR}${_VERSION}/ ]
+	elif [ -d "${_BOOT_PATH}${U_BOOT_FDT_DIR}${_VERSION}/" ]
 	then
 		_FDT="fdtdir ${U_BOOT_FDT_DIR}${_VERSION}/"
 	elif [ -f "${_BOOT_PATH}/${U_BOOT_FDT:-dtb-${_VERSION}}" ] && [ /usr/lib/linux-image- = "${U_BOOT_FDT_DIR}" ]
@@ -192,7 +192,7 @@ do
 		_FDT=""
 	fi
 
-	if echo ${U_BOOT_ALTERNATIVES} | grep -q default
+	if echo "${U_BOOT_ALTERNATIVES}" | grep -q default
 	then
 
 	# Writing default entry
@@ -207,7 +207,7 @@ label l${_NUMBER}
 
 	fi
 
-	if echo ${U_BOOT_ALTERNATIVES} | grep -q recovery
+	if echo "${U_BOOT_ALTERNATIVES}" | grep -q recovery
 	then
 
 	# Writing recovery entry
@@ -218,12 +218,12 @@ label l${_NUMBER}r
 	linux ${_BOOT_DIRECTORY}/${_KERNEL}
 	${_INITRD}
 	${_FDT}
-	append ${U_BOOT_ROOT} $(echo ${U_BOOT_PARAMETERS} | sed -e 's| quiet||') single
+	append ${U_BOOT_ROOT} $(echo "${U_BOOT_PARAMETERS}" | sed -e 's| quiet||') single
 	"
 
 	fi
 
-	_NUMBER="$((${_NUMBER} + 1))"
+	_NUMBER="$((_NUMBER + 1))"
 
 	if [ "${U_BOOT_ENTRIES}" = "${_ENTRY}" ]
 	then

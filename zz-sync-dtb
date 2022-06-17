@@ -27,7 +27,7 @@ dtbdir="/usr/lib/linux-image-${version}"
 
 if [ -d "${dtbdir}" ]; then
 	echo >&2 "W: sync-dtb: syncing ${dtbdir}"
-	mkdir -p /boot/${dtbdir}
+	mkdir -p "/boot/${dtbdir}"
 	rsync -a "${dtbdir}/." "/boot/${dtbdir}/."
 else
 	echo >&2 "W: sync-dtb: ${dtbdir} NOT PRESENT"
