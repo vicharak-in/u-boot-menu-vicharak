@@ -17,6 +17,7 @@ Depends:
 Suggests:
  flash-kernel,
 Architecture: all
+Multi-Arch: foreign
 Description: u-boot menu update
  Automatically create extlinux-style boot menu for u-boot. Boot menu
  entries are automatically created for every kernel package when they are
