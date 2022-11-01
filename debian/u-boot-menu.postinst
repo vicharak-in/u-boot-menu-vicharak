@@ -1,0 +1,8 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = "triggered" ]
+then
+	/usr/sbin/u-boot-update
+fi

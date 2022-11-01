@@ -49,6 +49,15 @@ then
 	. /etc/default/u-boot
 fi
 
+# Reading config file fragments if they exist
+for file in /usr/share/u-boot-menu/conf.d/*.conf /etc/u-boot-menu/conf.d/*.conf
+do
+	if [ -e "${file}" ]
+	then
+		. "${file}"
+	fi
+done
+
 # Reading the os-release file
 if [ -e /etc/os-release ]
 then

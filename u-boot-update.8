@@ -9,7 +9,19 @@ u\-boot\-update \- program to generate u\-boot menu files
 .SH DESCRIPTION
 u\-boot\-update is a tool used to generate the menu files
 used by the U\-BOOT bootloader.
-Options can be configured in /etc/default/u\-boot.
+Options can be configured in /etc/default/u\-boot
+or by adding configuration fragment files to /usr/share/u\-boot\-menu/conf.d/
+(those take precedence over /etc/default/u\-boot) and/or to
+/etc/u\-boot\-menu/conf.d/ (those take precedence over the 2 aforementioned
+locations).
+
+.PP
+
+In order to avoid situations where the system might be rendered unbootable by a
+package removal, other packages and downstream distributions MUST NOT edit or
+modify files under /etc as those are meant for use by end\-users only. Instead,
+it is mandated for such packages to install their config fragments ONLY under
+/usr/share/u\-boot\-menu/conf.d/.
 
 .PP
 
@@ -126,6 +138,8 @@ Default is 'initrd.img'.
 
 .SH FILES
 /etc/default/u-boot
+/usr/share/u-boot-menu/conf.d/
+/etc/u-boot-menu/conf.d/
 
 .SH HOMEPAGE
 More information about U\-BOOT

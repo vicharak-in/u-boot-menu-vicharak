@@ -1,0 +1,32 @@
+Configuration files handling
+============================
+
+Configuration files are read from the following locations, ordered by priority:
+1. /etc/default/u-boot
+2. /usr/share/u-boot-menu/conf.d/*.conf
+3. /etc/u-boot-menu/conf.d/*.conf
+
+Each configuration file can contain one or more environment variable and is
+sourced by u-boot-update. See u-boot-update(8) for more information about
+allowed variables.
+
+Variables values can be overriden by highest-priority configuration files. For
+example, if /etc/default/u-boot contains `U_BOOT_DEFAULT=l0` and there is a
+file named /usr/share/u-boot-menu/conf.d/new-default.conf containing
+`U_BOOT_DEFAULT=l0r`, then the menu entry labelled `l0r` will be set as the
+default entry. Moreover, if there is a file named, for example,
+/etc/u-boot-menu/conf.d/restore-default.conf containing `U_BOOT_DEFAULT=l1`,
+then the default menu entry will be the one labelled `l1`.
+
+This allows flexible configuration management by allowing other packages (for
+example, a support package for a specific device) to place configuration
+fragment files under /usr/share/u-boot-menu/conf.d/ to override the default
+values provided by u-boot-menu, while leaving an option for the end user to
+get the final word by creating a configuration fragment file under
+/etc/u-boot-menu/conf.d/.
+
+IMPORTANT: In order to avoid situations where the system might be rendered
+unbootable by a package removed but not purged, other packages (or downstream
+distributions) MUST NOT edit or modify files under /etc as those are meant for
+use by end-users only. Instead, it is mandated for such packages to install
+their config fragments ONLY under /usr/share/u-boot-menu/conf.d/.
