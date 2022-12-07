@@ -222,7 +222,7 @@ do
 			do
 				if [ -f "${_BOOT_PATH}/${U_BOOT_FDT_OVERLAYS_DIR}/${_DTBO}" ]
 				then
-					_DTBO_LIST="${_DTBO_LIST} ${_BOOT_DIRECTORY}${U_BOOT_FDT_OVERLAYS_DIR}/${_DTBO}"
+					_DTBO_LIST="${_DTBO_LIST} ${U_BOOT_FDT_OVERLAYS_DIR}/${_DTBO}"
 				fi
 			done
 		else
@@ -231,7 +231,7 @@ do
 				if [ -f "${_DTBO_PATH}" ]
 				then
 					_DTBO=$(basename "${_DTBO_PATH}")
-					_DTBO_LIST="${_DTBO_LIST} ${_BOOT_DIRECTORY}${U_BOOT_FDT_OVERLAYS_DIR}/${_DTBO}"
+					_DTBO_LIST="${_DTBO_LIST} ${U_BOOT_FDT_OVERLAYS_DIR}/${_DTBO}"
 				fi
 			done
 		fi
@@ -268,7 +268,6 @@ label l${_NUMBER}r
 	linux ${_BOOT_DIRECTORY}/${_KERNEL}
 	${_INITRD}
 	${_FDT}
-	${_FDTOVERLAYS}
 	append ${U_BOOT_ROOT} $(echo "${U_BOOT_PARAMETERS}" | sed -e 's| quiet||') single
 	"
 
