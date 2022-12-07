@@ -10,7 +10,7 @@ Each configuration file can contain one or more environment variable and is
 sourced by u-boot-update. See u-boot-update(8) for more information about
 allowed variables.
 
-Variables values can be overriden by highest-priority configuration files. For
+Variables values can be overridden by highest-priority configuration files. For
 example, if /etc/default/u-boot contains `U_BOOT_DEFAULT=l0` and there is a
 file named /usr/share/u-boot-menu/conf.d/new-default.conf containing
 `U_BOOT_DEFAULT=l0r`, then the menu entry labelled `l0r` will be set as the
