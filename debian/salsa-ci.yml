@@ -5,5 +5,11 @@ variables:
   # no autopkgtest tests
   SALSA_CI_DISABLE_AUTOPKGTEST: 1
 
+  # No compiler flags to check
+  SALSA_CI_DISABLE_BLHC: 1
+
   # No arch:any packages
   SALSA_CI_DISABLE_BUILD_PACKAGE_ANY: 1
+
+  # No arch:arm64 packages
+  SALSA_CI_DISABLE_CROSSBUILD_ARM64: 1
