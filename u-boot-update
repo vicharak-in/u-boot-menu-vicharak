@@ -200,7 +200,10 @@ do
 	else
 		_INITRD=""
 	fi
-	if [ -e "${_BOOT_PATH}${U_BOOT_FDT_DIR}${_VERSION}/${U_BOOT_FDT}" ] && [ -n "${U_BOOT_FDT}" ]
+	if [ -e "${U_BOOT_FDT}" ] && [ -n "${U_BOOT_FDT}" ] && [ "/" = $(echo "${U_BOOT_FDT}" | head -c1) ]
+	then
+		_FDT="fdt ${U_BOOT_FDT}"
+	elif [ -e "${_BOOT_PATH}${U_BOOT_FDT_DIR}${_VERSION}/${U_BOOT_FDT}" ] && [ -n "${U_BOOT_FDT}" ]
 	then
 		_FDT="fdt ${U_BOOT_FDT_DIR}${_VERSION}/${U_BOOT_FDT}"
 	elif [ -d "${_BOOT_PATH}${U_BOOT_FDT_DIR}${_VERSION}/" ]
