@@ -1,3 +1,27 @@
+u-boot-menu (4.2.0) unstable; urgency=medium
+
+  [ Zhang Ning ]
+  * add kalsrseed support
+  * fix fdtoverlays path
+
+  [ Debian Janitor ]
+  * Apply multi-arch hints. + u-boot-menu: Add Multi-Arch: foreign.
+  * Use secure copyright file specification URI.
+
+  [ Arnaud Ferraris ]
+  * u-boot-update: allow using config fragments (Closes: #1012333)
+  * u-boot-update: honor /etc/kernel/cmdline (Closes: #1019743)
+
+  [ Vagrant Cascadian ]
+  * debian/control: Add Vagrant Cascadian to Uploaders.
+  * u-boot-menu.postinst: Add debhelper token.
+
+  [ Nicolas Frattaroli ]
+  * u-boot-update: use U_BOOT_FDT as absolute path if it is one
+    (Closes: #1025435)
+
+ -- Vagrant Cascadian <vagrant@debian.org>  Sun, 11 Dec 2022 15:05:25 -0800
+
 u-boot-menu (4.1.0) unstable; urgency=medium
 
   * tighten quoting in shell code, thanks to shellcheck
