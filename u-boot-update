@@ -256,7 +256,6 @@ label l${_NUMBER}
 	${_INITRD}
 	${_FDT}
 	${_FDTOVERLAYS}
-	kaslrseed
 	append ${U_BOOT_ROOT} ${U_BOOT_PARAMETERS}"
 
 	fi
