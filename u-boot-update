@@ -96,6 +96,7 @@ fi
 
 U_BOOT_ALTERNATIVES="${U_BOOT_ALTERNATIVES:-default recovery}"
 U_BOOT_DEFAULT="${U_BOOT_DEFAULT:-l0}"
+U_BOOT_PROMPT="${U_BOOT_PROMPT:-0}"
 U_BOOT_ENTRIES="${U_BOOT_ENTRIES:-all}"
 U_BOOT_TIMEOUT="${U_BOOT_TIMEOUT:-50}"
 U_BOOT_MENU_LABEL="${U_BOOT_MENU_LABEL:-${PRETTY_NAME:-Debian GNU/Linux kernel}}"
@@ -162,7 +163,7 @@ _CONFIG="\
 
 default ${U_BOOT_DEFAULT}
 menu title U-Boot menu
-prompt 0
+prompt ${U_BOOT_PROMPT}
 timeout ${U_BOOT_TIMEOUT}
 "
 
