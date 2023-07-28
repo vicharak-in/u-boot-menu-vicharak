@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+CC=aarch64-linux-gnu- dpkg-buildpackage -a arm64 -d -b -nc -uc
+
+if [ $? -eq 0 ]; then
+	echo "Build deb package success!"
+
+	# Copy deb package to current directory
+	mv ../u-boot-menu_* .
+else
+	echo "Build deb package failed!"
+fi
