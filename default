@@ -11,5 +11,5 @@ U_BOOT_PARAMETERS=$(cat /proc/cmdline)
 U_BOOT_ROOT="root=PARTUUID=614e0000-0000-4b53-8000-1d28000054a9"
 U_BOOT_TIMEOUT="10"
 U_BOOT_FDT="rk3399-vaaman-linux.dtb"
-U_BOOT_FDT_DIR="/usr/lib/linux-image-$(uname -r)"
-U_BOOT_FDT_OVERLAYS_DIR="${U_BOOT_FDT_DIR}/rockchip/overlays"
+U_BOOT_FDT_DIR="/usr/lib/linux-image-$(uname -r)/rockchip"
+U_BOOT_FDT_OVERLAYS_DIR="/overlays"
