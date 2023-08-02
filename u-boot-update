@@ -11,19 +11,17 @@ set -e
 
 _U_BOOT_DIRECTORY="/boot/extlinux"
 
-Update ()
-{
-	 # Upate target file using source content
+Update() {
+	# Upate target file using source content
 	_TARGET="${1}"
 	_SOURCE="${2}"
 
 	_TMPFILE="${_TARGET}.tmp"
 	rm -f "${_TMPFILE}"
 
-	echo "${_SOURCE}" > "${_TMPFILE}"
+	echo "${_SOURCE}" >"${_TMPFILE}"
 
-	if [ -e "${_TARGET}" ] && cmp -s "${_TARGET}" "${_TMPFILE}"
-	then
+	if [ -e "${_TARGET}" ] && cmp -s "${_TARGET}" "${_TMPFILE}"; then
 		rm -f "${_TMPFILE}"
 	else
 		# FIXME: should use fsync here
@@ -34,8 +32,7 @@ Update ()
 
 # FIXME: switch to check extlinux file can be written to
 # User is unprivileged
-if [ "$(id -u)" -ne 0 ]
-then
+if [ "$(id -u)" -ne 0 ]; then
 	echo "E: need root privileges"
 	exit 1
 fi
@@ -44,34 +41,27 @@ fi
 exec 1>&2
 
 # Reading the default file
-if [ -e /etc/default/u-boot ]
-then
+if [ -e /etc/default/u-boot ]; then
 	. /etc/default/u-boot
 fi
 
 # Reading config file fragments if they exist
-for file in /usr/share/u-boot-menu/conf.d/*.conf /etc/u-boot-menu/conf.d/*.conf
-do
-	if [ -e "${file}" ]
-	then
+for file in /usr/share/u-boot-menu/conf.d/*.conf /etc/u-boot-menu/conf.d/*.conf; do
+	if [ -e "${file}" ]; then
 		. "${file}"
 	fi
 done
 
 # Reading the os-release file
-if [ -e /etc/os-release ]
-then
+if [ -e /etc/os-release ]; then
 	. /etc/os-release
-elif [ -e /usr/lib/os-release ]
-then
+elif [ -e /usr/lib/os-release ]; then
 	. /usr/lib/os-release
 fi
 
-
 U_BOOT_UPDATE="${U_BOOT_UPDATE:-true}"
 
-if [ "${U_BOOT_UPDATE}" != "true" ]
-then
+if [ "${U_BOOT_UPDATE}" != "true" ]; then
 	echo "P: u-boot-update is disabled in /etc/default/u-boot."
 
 	exit 0
@@ -81,8 +71,7 @@ fi
 printf '%s' "P: Checking for EXTLINUX directory..."
 
 # Creating extlinux directory
-if [ ! -e "${_U_BOOT_DIRECTORY}" ]
-then
+if [ ! -e "${_U_BOOT_DIRECTORY}" ]; then
 	echo " not found."
 
 	printf '%s' "P: Creating EXTLINUX directory..."
@@ -105,52 +94,46 @@ U_BOOT_FDT_OVERLAYS="${U_BOOT_FDT_OVERLAYS:-}"
 U_BOOT_FDT_OVERLAYS_DIR="${U_BOOT_FDT_OVERLAYS_DIR:-/boot/dtbo}"
 U_BOOT_INITRD="${U_BOOT_INITRD:-initrd.img}"
 
-if [ -z "${U_BOOT_PARAMETERS}" ] && [ -f /etc/kernel/cmdline ]
-then
-	U_BOOT_PARAMETERS="$(cat /etc/kernel/cmdline | sed -e 's/root=[^[:space:]]*//' -e 's/^[[:space:]]*//')"
-	if [ -z "${U_BOOT_ROOT}" ]
-	then
-		U_BOOT_ROOT="$(cat /etc/kernel/cmdline | sed -re 's/.*(root=[^[:space:]]*).*/\1/')"
+if [ -z "${U_BOOT_PARAMETERS}" ] && [ -f /etc/kernel/cmdline ]; then
+	U_BOOT_PARAMETERS="$(sed -e 's/root=[^[:space:]]*//' -e 's/^[[:space:]]*//' /etc/kernel/cmdline)"
+	if [ -z "${U_BOOT_ROOT}" ]; then
+		U_BOOT_ROOT="$(sed -re 's/.*(root=[^[:space:]]*).*/\1/' /etc/kernel/cmdline)"
 	fi
 fi
 U_BOOT_PARAMETERS="${U_BOOT_PARAMETERS:-ro quiet}"
 
 # Find parameter for root from fstab
-if [ -z "${U_BOOT_ROOT}" ]
-then
+if [ -z "${U_BOOT_ROOT}" ]; then
 	# Find root partition
-	while read _LINE
-	do
+	while read -r _LINE; do
 
-read _FS_SPEC _FS_FILE _FS_VFSTYPE _FS_MNTOPS _FS_FREQ _FS_PASSNO << EOF
+		read -r _FS_SPEC _FS_FILE _FS_VFSTYPE _FS_MNTOPS _FS_FREQ _FS_PASSNO <<EOF
 ${_LINE}
 EOF
 
-		if [ "${_FS_FILE}" = "/" ]
-		then
+		if [ "${_FS_FILE}" = "/" ]; then
 			case "${_FS_SPEC}" in
-				"#"*) ;;
-				*) U_BOOT_ROOT="root=${_FS_SPEC}"
-				   break ;;
+			"#"*) ;;
+			*)
+				U_BOOT_ROOT="root=${_FS_SPEC}"
+				break
+				;;
 			esac
 		fi
-	done < /etc/fstab
+	done </etc/fstab
 fi
 
 # if not in fstab, try from current kernel arguments
-if [ -z "${U_BOOT_ROOT}" ]
-then
-	for param in $(cat /proc/cmdline)
-	do
-		case $param in
-		  root=*)
-			U_BOOT_ROOT="$param"
+if [ -z "${U_BOOT_ROOT}" ]; then
+	while read -r _LINE; do
+		case "${_LINE}" in
+		"root="*)
+			U_BOOT_ROOT="${_LINE}"
 			break
 			;;
 		esac
-	done
+	done </proc/cmdline
 fi
-
 
 # Create extlinux.conf
 _CONFIG="\
@@ -171,8 +154,7 @@ timeout ${U_BOOT_TIMEOUT}
 _KERNELS=$(find /boot -maxdepth 1 -type f -name "Image*" | sed -e 's,.*/boot/,,g')
 
 # Find boot directory as seen in u-boot, and path prefix while in linux
-if [ "$(stat --printf %d /)" = "$(stat --printf %d /boot)" ]
-then
+if [ "$(stat --printf %d /)" = "$(stat --printf %d /boot)" ]; then
 	# / and /boot are on the same filesystem
 	_BOOT_DIRECTORY="/boot"
 	_BOOT_PATH=""
@@ -182,9 +164,7 @@ else
 	_BOOT_PATH="/boot"
 fi
 
-
-for _KERNEL in ${_KERNELS}
-do
+for _KERNEL in ${_KERNELS}; do
 	# Strip kernel prefix to derive version.
 	_VERSION=${_KERNEL#*-}
 	echo "P: Writing config for ${_KERNEL}..."
@@ -192,64 +172,50 @@ do
 	_NUMBER="${_NUMBER:-0}"
 	_ENTRY="${_ENTRY:-1}"
 
-	if [ -e "/boot/${U_BOOT_INITRD}-${_VERSION}" ]
-	then
+	if [ -e "/boot/${U_BOOT_INITRD}-${_VERSION}" ]; then
 		_INITRD="initrd ${_BOOT_DIRECTORY}/${U_BOOT_INITRD}-${_VERSION}"
-	elif [ -e "/boot/${U_BOOT_INITRD}" ]
-	then
+	elif [ -e "/boot/${U_BOOT_INITRD}" ]; then
 		_INITRD="initrd ${_BOOT_DIRECTORY}/${U_BOOT_INITRD}"
 	else
 		_INITRD=""
 	fi
-	if [ -e "${U_BOOT_FDT}" ] && [ -n "${U_BOOT_FDT}" ] && [ "/" = $(echo "${U_BOOT_FDT}" | head -c1) ]
-	then
+	if [ -e "${U_BOOT_FDT}" ] && [ -n "${U_BOOT_FDT}" ] && [ "/" = "$(echo "${U_BOOT_FDT}" | head -c1)" ]; then
 		_FDT="fdt ${U_BOOT_FDT}"
-	elif [ -e "${_BOOT_PATH}${U_BOOT_FDT_DIR}${_VERSION}/${U_BOOT_FDT}" ] && [ -n "${U_BOOT_FDT}" ]
-	then
+	elif [ -e "${_BOOT_PATH}${U_BOOT_FDT_DIR}${_VERSION}/${U_BOOT_FDT}" ] && [ -n "${U_BOOT_FDT}" ]; then
 		_FDT="fdt ${U_BOOT_FDT_DIR}${_VERSION}/${U_BOOT_FDT}"
-	elif [ -d "${_BOOT_PATH}${U_BOOT_FDT_DIR}${_VERSION}/" ]
-	then
+	elif [ -d "${_BOOT_PATH}${U_BOOT_FDT_DIR}${_VERSION}/" ]; then
 		_FDT="fdtdir ${U_BOOT_FDT_DIR}${_VERSION}/"
-	elif [ -f "${_BOOT_PATH}/${U_BOOT_FDT:-dtb-${_VERSION}}" ] && [ /usr/lib/linux-image- = "${U_BOOT_FDT_DIR}" ]
-	then
+	elif [ -f "${_BOOT_PATH}/${U_BOOT_FDT:-dtb-${_VERSION}}" ] && [ /usr/lib/linux-image- = "${U_BOOT_FDT_DIR}" ]; then
 		_FDT="fdt /${U_BOOT_FDT:-dtb-${_VERSION}}"
 	else
 		_FDT=""
 	fi
 
-	if [ -d "${_BOOT_PATH}/${U_BOOT_FDT_OVERLAYS_DIR}" ]
-	then
+	if [ -d "${_BOOT_PATH}/${U_BOOT_FDT_OVERLAYS_DIR}" ]; then
 		_DTBO_LIST=""
-		if [ -n "${U_BOOT_FDT_OVERLAYS}" ]
-		then
-			for _DTBO in ${U_BOOT_FDT_OVERLAYS}
-			do
-				if [ -f "${_BOOT_PATH}/${U_BOOT_FDT_OVERLAYS_DIR}/${_DTBO}" ]
-				then
+		if [ -n "${U_BOOT_FDT_OVERLAYS}" ]; then
+			for _DTBO in ${U_BOOT_FDT_OVERLAYS}; do
+				if [ -f "${_BOOT_PATH}/${U_BOOT_FDT_OVERLAYS_DIR}/${_DTBO}" ]; then
 					_DTBO_LIST="${_DTBO_LIST} ${U_BOOT_FDT_OVERLAYS_DIR}/${_DTBO}"
 				fi
 			done
 		else
-			for _DTBO_PATH in "${_BOOT_PATH}/${U_BOOT_FDT_OVERLAYS_DIR}/"*.dtbo
-			do
-				if [ -f "${_DTBO_PATH}" ]
-				then
+			for _DTBO_PATH in "${_BOOT_PATH}/${U_BOOT_FDT_OVERLAYS_DIR}/"*.dtbo; do
+				if [ -f "${_DTBO_PATH}" ]; then
 					_DTBO=$(basename "${_DTBO_PATH}")
 					_DTBO_LIST="${_DTBO_LIST} ${U_BOOT_FDT_OVERLAYS_DIR}/${_DTBO}"
 				fi
 			done
 		fi
-		if [ -n "${_DTBO_LIST}" ]
-		then
+		if [ -n "${_DTBO_LIST}" ]; then
 			_FDTOVERLAYS="fdtoverlays ${_DTBO_LIST}"
 		fi
 	fi
 
-	if echo "${U_BOOT_ALTERNATIVES}" | grep -q default
-	then
+	if echo "${U_BOOT_ALTERNATIVES}" | grep -q default; then
 
-	# Writing default entry
-	_CONFIG="${_CONFIG}
+		# Writing default entry
+		_CONFIG="${_CONFIG}
 
 label l${_NUMBER}
 	menu label ${U_BOOT_MENU_LABEL} ${_VERSION}
@@ -261,11 +227,10 @@ label l${_NUMBER}
 
 	fi
 
-	if echo "${U_BOOT_ALTERNATIVES}" | grep -q recovery
-	then
+	if echo "${U_BOOT_ALTERNATIVES}" | grep -q recovery; then
 
-	# Writing recovery entry
-	_CONFIG="${_CONFIG}
+		# Writing recovery entry
+		_CONFIG="${_CONFIG}
 
 label l${_NUMBER}r
 	menu label ${U_BOOT_MENU_LABEL} ${_VERSION} (rescue target)
@@ -279,8 +244,7 @@ label l${_NUMBER}r
 
 	_NUMBER="$((_NUMBER + 1))"
 
-	if [ "${U_BOOT_ENTRIES}" = "${_ENTRY}" ]
-	then
+	if [ "${U_BOOT_ENTRIES}" = "${_ENTRY}" ]; then
 		break
 	fi
 done
@@ -288,4 +252,3 @@ done
 _NUMBER=""
 
 Update "${_U_BOOT_DIRECTORY}/extlinux.conf" "${_CONFIG}"
-
