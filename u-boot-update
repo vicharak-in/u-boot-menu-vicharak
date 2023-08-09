@@ -193,16 +193,16 @@ for _KERNEL in ${_KERNELS}; do
 		_FDT=""
 	fi
 
-	if [ -d "${_BOOT_PATH}/${U_BOOT_FDT_OVERLAYS_DIR}" ]; then
+	if [ -d "${U_BOOT_FDT_OVERLAYS_DIR}" ]; then
 		_DTBO_LIST=""
 		if [ -n "${U_BOOT_FDT_OVERLAYS}" ]; then
 			for _DTBO in ${U_BOOT_FDT_OVERLAYS}; do
-				if [ -f "${_BOOT_PATH}/${U_BOOT_FDT_OVERLAYS_DIR}/${_DTBO}" ]; then
+				if [ -f "${U_BOOT_FDT_OVERLAYS_DIR}/${_DTBO}" ]; then
 					_DTBO_LIST="${_DTBO_LIST} ${U_BOOT_FDT_OVERLAYS_DIR}/${_DTBO}"
 				fi
 			done
 		else
-			for _DTBO_PATH in "${_BOOT_PATH}/${U_BOOT_FDT_OVERLAYS_DIR}/"*.dtbo; do
+			for _DTBO_PATH in "${U_BOOT_FDT_OVERLAYS_DIR}/"*.dtbo; do
 				if [ -f "${_DTBO_PATH}" ]; then
 					_DTBO=$(basename "${_DTBO_PATH}")
 					_DTBO_LIST="${_DTBO_LIST} ${U_BOOT_FDT_OVERLAYS_DIR}/${_DTBO}"
@@ -210,6 +210,9 @@ for _KERNEL in ${_KERNELS}; do
 			done
 		fi
 		if [ -n "${_DTBO_LIST}" ]; then
+			if echo "${_DTBO_LIST}" | grep -q "/boot"; then
+				_DTBO_LIST=$(echo "${_DTBO_LIST}" | sed -e "s/\/boot//g")
+			fi
 			_FDTOVERLAYS="fdtoverlays ${_DTBO_LIST}"
 		fi
 	elif [ -d "${_BOOT_PATH}/${U_BOOT_FDT_OVERLAYS_DIR}" ]; then
@@ -229,6 +232,8 @@ for _KERNEL in ${_KERNELS}; do
 			done
 		fi
 		if [ -n "${_DTBO_LIST}" ]; then
+			echo "Removing ${_BOOT_PATH} prefix from ${_DTBO_LIST}" 2>&1 | tee -a /var/log/u-boot-update.log
+			_DTBO_LIST=$(echo "${_DTBO_LIST}" | sed -e "s,^'/boot',,g")
 			_FDTOVERLAYS="fdtoverlays ${_DTBO_LIST}"
 		fi
 	fi
