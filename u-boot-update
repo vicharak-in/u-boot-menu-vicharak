@@ -124,16 +124,16 @@ U_BOOT_PARAMETERS="${U_BOOT_PARAMETERS:-ro quiet}"
 # fi
 
 # if not in fstab, try from current kernel arguments
-if [ -z "${U_BOOT_ROOT}" ]; then
-	while read -r _LINE; do
-		case "${_LINE}" in
-		"root="*)
-			U_BOOT_ROOT="${_LINE}"
-			break
-			;;
-		esac
-	done </proc/cmdline
-fi
+# if [ -z "${U_BOOT_ROOT}" ]; then
+# 	while read -r _LINE; do
+# 		case "${_LINE}" in
+# 		"root="*)
+# 			U_BOOT_ROOT="${_LINE}"
+# 			break
+# 			;;
+# 		esac
+# 	done </proc/cmdline
+# fi
 
 # Create extlinux.conf
 _CONFIG="\
