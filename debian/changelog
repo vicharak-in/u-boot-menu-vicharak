@@ -1,3 +1,10 @@
+u-boot-menu (5.0.1) stable; urgency=medium
+
+  [Shail Parmar]
+  * Adapt u-boot-menu for Vicharak boards
+
+ -- vicharak <shailparmar26@gmail.com>  Thu, 23 May 2024 17:42:11 +0530
+
 u-boot-menu (5.0.0) stable; urgency=medium
 
   [ Utsav Balar ]
