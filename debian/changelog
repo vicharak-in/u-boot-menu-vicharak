@@ -1,3 +1,10 @@
+u-boot-menu (5.0.2) stable; urgency=medium
+
+  [Devang Kabutarwala]
+  * Make packaging suitable for debian i.e. use xz compression
+
+ -- vicharak <d.kabutarwala@yahoo.com>  Sat, 14 Sep 2024 12:45:01 +0530
+
 u-boot-menu (5.0.1) stable; urgency=medium
 
   [Shail Parmar]
