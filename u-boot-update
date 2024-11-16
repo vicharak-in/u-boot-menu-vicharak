@@ -10,6 +10,7 @@
 set -e
 
 _U_BOOT_DIRECTORY="/boot/extlinux"
+_U_BOOT_DTB_DIR="/boot"
 
 Update() {
 	# Upate target file using source content
@@ -135,6 +136,16 @@ U_BOOT_PARAMETERS="${U_BOOT_PARAMETERS:-ro quiet}"
 # 	done </proc/cmdline
 # fi
 
+# Loop through all matching DTB files
+for dtb in $(find "$_U_BOOT_DTB_DIR" -type f -name "*.dtb"); do
+    filename=$(basename "$dtb")  # Get just the filename
+    echo $filename
+    U_BOOT_FDT="$U_BOOT_FDT $filename"
+done
+
+# Trim the trailing space
+U_BOOT_FDT=$(echo "$U_BOOT_FDT" | sed 's/ *$//')
+
 # Create extlinux.conf
 _CONFIG="\
 ## ${_U_BOOT_DIRECTORY}/extlinux.conf
@@ -179,19 +190,29 @@ for _KERNEL in ${_KERNELS}; do
 	else
 		_INITRD=""
 	fi
-	if [ -e "${U_BOOT_FDT}" ] && [ -n "${U_BOOT_FDT}" ] && [ "/" = "$(echo "${U_BOOT_FDT}" | head -c1)" ]; then
-		_FDT="fdt ${U_BOOT_FDT}"
-	elif [ -e "${_BOOT_PATH}${U_BOOT_FDT_DIR}${_VERSION}/${U_BOOT_FDT}" ] && [ -n "${U_BOOT_FDT}" ]; then
-		_FDT="fdt ${U_BOOT_FDT_DIR}${_VERSION}/${U_BOOT_FDT}"
-	elif [ -d "${_BOOT_PATH}${U_BOOT_FDT_DIR}${_VERSION}/" ]; then
-		_FDT="fdtdir ${U_BOOT_FDT_DIR}${_VERSION}/"
-	elif [ -e "${_BOOT_PATH}/${U_BOOT_FDT}" ] && [ -n "${U_BOOT_FDT}" ]; then
-		_FDT="fdt /${U_BOOT_FDT}"
-	elif [ -f "${_BOOT_PATH}/${U_BOOT_FDT:-dtb-${_VERSION}}" ] && [ /usr/lib/linux-image- = "${U_BOOT_FDT_DIR}" ]; then
-		_FDT="fdt /${U_BOOT_FDT:-dtb-${_VERSION}}"
-	else
-		_FDT=""
-	fi
+
+	for dtb in ${U_BOOT_FDT}; do
+		# Check if the DTB matches the current kernel version
+		_IMG_VERSION=$(echo "${_KERNEL#-}" | sed 's/-.[a-z]+//')
+		DTB_VERSION=$(echo "$dtb" | sed -n 's/.-([0-9]+.[0-9]+.[0-9]+-[a-z]+)./\1/p')
+
+		if [ "$DTB_VERSION" = "$_IMG_VERSION" ]; then
+			if [ -e "${dtb}" ] && [ -n "${dtb}" ] && [ "/" = "$(echo "${dtb}" | head -c1)" ]; then
+				_FDT="fdt ${dtb}"
+			elif [ -e "${_BOOT_PATH}${U_BOOT_FDT_DIR}${_VERSION}/${dtb}" ] && [ -n "${dtb}" ]; then
+				_FDT="fdt ${U_BOOT_FDT_DIR}${_VERSION}/${dtb}"
+			elif [ -d "${_BOOT_PATH}${U_BOOT_FDT_DIR}${_VERSION}/" ]; then
+				_FDT="fdtdir ${U_BOOT_FDT_DIR}${_VERSION}/"
+			elif [ -e "${_BOOT_PATH}/${dtb}" ] && [ -n "${dtb}" ]; then
+				_FDT="fdt /${dtb}"
+			elif [ -f "${_BOOT_PATH}/${U_BOOT_FDT:-dtb-${_VERSION}}" ] && [ /usr/lib/linux-image- = "${U_BOOT_FDT_DIR}" ]; then
+				_FDT="fdt /${dtb:-dtb-${_VERSION}}"
+			else
+				_FDT=""
+			fi
+		break
+		fi
+	done
 
 	if [ -d "${U_BOOT_FDT_OVERLAYS_DIR}" ]; then
 		_DTBO_LIST=""
