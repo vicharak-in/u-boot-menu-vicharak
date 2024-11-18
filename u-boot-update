@@ -10,6 +10,7 @@
 set -e
 
 _U_BOOT_DIRECTORY="/boot/extlinux"
+_U_BOOT_DTB_DIR="/boot"
 
 Update() {
 	# Upate target file using source content
@@ -135,6 +136,16 @@ U_BOOT_PARAMETERS="${U_BOOT_PARAMETERS:-ro quiet}"
 # 	done </proc/cmdline
 # fi
 
+# Loop through all matching DTB files
+for dtb in $(find "$_U_BOOT_DTB_DIR" -type f -name "*.dtb"); do
+    filename=$(basename "$dtb")  # Get just the filename
+    echo $filename
+    U_BOOT_FDT="$U_BOOT_FDT $filename"
+done
+
+# Trim the trailing space
+U_BOOT_FDT=$(echo "$U_BOOT_FDT" | sed 's/ *$//')
+
 # Create extlinux.conf
 _CONFIG="\
 ## ${_U_BOOT_DIRECTORY}/extlinux.conf
@@ -179,33 +190,44 @@ for _KERNEL in ${_KERNELS}; do
 	else
 		_INITRD=""
 	fi
-	if [ -e "${U_BOOT_FDT}" ] && [ -n "${U_BOOT_FDT}" ] && [ "/" = "$(echo "${U_BOOT_FDT}" | head -c1)" ]; then
-		_FDT="fdt ${U_BOOT_FDT}"
-	elif [ -e "${_BOOT_PATH}${U_BOOT_FDT_DIR}${_VERSION}/${U_BOOT_FDT}" ] && [ -n "${U_BOOT_FDT}" ]; then
-		_FDT="fdt ${U_BOOT_FDT_DIR}${_VERSION}/${U_BOOT_FDT}"
-	elif [ -d "${_BOOT_PATH}${U_BOOT_FDT_DIR}${_VERSION}/" ]; then
-		_FDT="fdtdir ${U_BOOT_FDT_DIR}${_VERSION}/"
-	elif [ -e "${_BOOT_PATH}/${U_BOOT_FDT}" ] && [ -n "${U_BOOT_FDT}" ]; then
-		_FDT="fdt /${U_BOOT_FDT}"
-	elif [ -f "${_BOOT_PATH}/${U_BOOT_FDT:-dtb-${_VERSION}}" ] && [ /usr/lib/linux-image- = "${U_BOOT_FDT_DIR}" ]; then
-		_FDT="fdt /${U_BOOT_FDT:-dtb-${_VERSION}}"
-	else
-		_FDT=""
-	fi
 
-	if [ -d "${U_BOOT_FDT_OVERLAYS_DIR}" ]; then
+	for dtb in ${U_BOOT_FDT}; do
+		# Check if the DTB matches the current kernel version
+		_IMG_VERSION=$(echo "${_KERNEL#-}" | sed 's/-.[a-z]+//')
+		DTB_VERSION=$(echo "$dtb" | sed -n 's/.-([0-9]+.[0-9]+.[0-9]+-[a-z]+)./\1/p')
+
+		if [ "$DTB_VERSION" = "$_IMG_VERSION" ]; then
+			if [ -e "${dtb}" ] && [ -n "${dtb}" ] && [ "/" = "$(echo "${dtb}" | head -c1)" ]; then
+				_FDT="fdt ${dtb}"
+			elif [ -e "${_BOOT_PATH}${U_BOOT_FDT_DIR}${_VERSION}/${dtb}" ] && [ -n "${dtb}" ]; then
+				_FDT="fdt ${U_BOOT_FDT_DIR}${_VERSION}/${dtb}"
+			elif [ -d "${_BOOT_PATH}${U_BOOT_FDT_DIR}${_VERSION}/" ]; then
+				_FDT="fdtdir ${U_BOOT_FDT_DIR}${_VERSION}/"
+			elif [ -e "${_BOOT_PATH}/${dtb}" ] && [ -n "${dtb}" ]; then
+				_FDT="fdt /${dtb}"
+			elif [ -f "${_BOOT_PATH}/${U_BOOT_FDT:-dtb-${_VERSION}}" ] && [ /usr/lib/linux-image- = "${U_BOOT_FDT_DIR}" ]; then
+				_FDT="fdt /${dtb:-dtb-${_VERSION}}"
+			else
+				_FDT=""
+			fi
+		break
+		fi
+	done
+	for overlays in "${_U_BOOT_DTB_DIR}"/overlays-*; do
+	_OVRLY_VERSION=$(echo "${overlays#*-}" | sed 's/-.*//')
+	if [-d "${overlasy}" ] && [ "${_OVRLY_VERSION}" = "${_IMG_VERSION}" ]; then
 		_DTBO_LIST=""
 		if [ -n "${U_BOOT_FDT_OVERLAYS}" ]; then
 			for _DTBO in ${U_BOOT_FDT_OVERLAYS}; do
-				if [ -f "${U_BOOT_FDT_OVERLAYS_DIR}/${_DTBO}" ]; then
+				if [ -f "${U_BOOT_FDT_OVERLAYS_DIR}-${_IMG_VERSION}/${_DTBO}" ]; then
 					_DTBO_LIST="${_DTBO_LIST} ${U_BOOT_FDT_OVERLAYS_DIR}/${_DTBO}"
 				fi
 			done
 		else
-			for _DTBO_PATH in "${U_BOOT_FDT_OVERLAYS_DIR}/"*.dtbo; do
+			for _DTBO_PATH in "${U_BOOT_FDT_OVERLAYS_DIR}-${_IMG_VERSION}/"*.dtbo; do
 				if [ -f "${_DTBO_PATH}" ]; then
 					_DTBO=$(basename "${_DTBO_PATH}")
-					_DTBO_LIST="${_DTBO_LIST} ${U_BOOT_FDT_OVERLAYS_DIR}/${_DTBO}"
+					_DTBO_LIST="${_DTBO_LIST} ${U_BOOT_FDT_OVERLAYS_DIR}-${_IMG_VERSION}/${_DTBO}"
 				fi
 			done
 		fi
@@ -215,19 +237,19 @@ for _KERNEL in ${_KERNELS}; do
 			fi
 			_FDTOVERLAYS="fdtoverlays ${_DTBO_LIST}"
 		fi
-	elif [ -d "${_BOOT_PATH}/${U_BOOT_FDT_OVERLAYS_DIR}" ]; then
+	elif [ -d "${_BOOT_PATH}/${U_BOOT_FDT_OVERLAYS_DIR}-${_IMG_VERSION}" ]; then
 		_DTBO_LIST=""
 		if [ -n "${U_BOOT_FDT_OVERLAYS}" ]; then
 			for _DTBO in ${U_BOOT_FDT_OVERLAYS}; do
-				if [ -f "${_BOOT_PATH}/${U_BOOT_FDT_OVERLAYS_DIR}/${_DTBO}" ]; then
-					_DTBO_LIST="${_DTBO_LIST} ${U_BOOT_FDT_OVERLAYS_DIR}/${_DTBO}"
+				if [ -f "${_BOOT_PATH}/${U_BOOT_FDT_OVERLAYS_DIR}-${_IMG_VERSION}/${_DTBO}" ]; then
+					_DTBO_LIST="${_DTBO_LIST} ${U_BOOT_FDT_OVERLAYS_DIR}-${_IMG_VERSION}/${_DTBO}"
 				fi
 			done
 		else
-			for _DTBO_PATH in "${_BOOT_PATH}/${U_BOOT_FDT_OVERLAYS_DIR}/"*.dtbo; do
+			for _DTBO_PATH in "${_BOOT_PATH}/${U_BOOT_FDT_OVERLAYS_DIR}-${_IMG_VERSION}/"*.dtbo; do
 				if [ -f "${_DTBO_PATH}" ]; then
 					_DTBO=$(basename "${_DTBO_PATH}")
-					_DTBO_LIST="${_DTBO_LIST} ${U_BOOT_FDT_OVERLAYS_DIR}/${_DTBO}"
+					_DTBO_LIST="${_DTBO_LIST} ${U_BOOT_FDT_OVERLAYS_DIR}-${_IMG_VERSION}/${_DTBO}"
 				fi
 			done
 		fi
@@ -237,7 +259,7 @@ for _KERNEL in ${_KERNELS}; do
 			_FDTOVERLAYS="fdtoverlays ${_DTBO_LIST}"
 		fi
 	fi
-
+	done
 	if echo "${U_BOOT_ALTERNATIVES}" | grep -q default; then
 
 		# Writing default entry

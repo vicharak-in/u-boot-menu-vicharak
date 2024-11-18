@@ -1,3 +1,10 @@
+u-boot-menu (5.0.3) stable; urgency=medium
+
+  [Pratiksha Thanki]
+  * Make versioning system for different kernels
+
+ -- vicharak <pratikshathanki2501@gmail.com>  Mon, 18 Nov 2024 19:15:00 +0530
+
 u-boot-menu (5.0.2) stable; urgency=medium
 
   [Devang Kabutarwala]
