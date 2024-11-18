@@ -213,20 +213,21 @@ for _KERNEL in ${_KERNELS}; do
 		break
 		fi
 	done
-
-	if [ -d "${U_BOOT_FDT_OVERLAYS_DIR}" ]; then
+	for overlays in "${_U_BOOT_DTB_DIR}"/overlays-*; do
+	_OVRLY_VERSION=$(echo "${overlays#*-}" | sed 's/-.*//')
+	if [-d "${overlasy}" ] && [ "${_OVRLY_VERSION}" = "${_IMG_VERSION}" ]; then
 		_DTBO_LIST=""
 		if [ -n "${U_BOOT_FDT_OVERLAYS}" ]; then
 			for _DTBO in ${U_BOOT_FDT_OVERLAYS}; do
-				if [ -f "${U_BOOT_FDT_OVERLAYS_DIR}/${_DTBO}" ]; then
+				if [ -f "${U_BOOT_FDT_OVERLAYS_DIR}-${_IMG_VERSION}/${_DTBO}" ]; then
 					_DTBO_LIST="${_DTBO_LIST} ${U_BOOT_FDT_OVERLAYS_DIR}/${_DTBO}"
 				fi
 			done
 		else
-			for _DTBO_PATH in "${U_BOOT_FDT_OVERLAYS_DIR}/"*.dtbo; do
+			for _DTBO_PATH in "${U_BOOT_FDT_OVERLAYS_DIR}-${_IMG_VERSION}/"*.dtbo; do
 				if [ -f "${_DTBO_PATH}" ]; then
 					_DTBO=$(basename "${_DTBO_PATH}")
-					_DTBO_LIST="${_DTBO_LIST} ${U_BOOT_FDT_OVERLAYS_DIR}/${_DTBO}"
+					_DTBO_LIST="${_DTBO_LIST} ${U_BOOT_FDT_OVERLAYS_DIR}-${_IMG_VERSION}/${_DTBO}"
 				fi
 			done
 		fi
@@ -236,19 +237,19 @@ for _KERNEL in ${_KERNELS}; do
 			fi
 			_FDTOVERLAYS="fdtoverlays ${_DTBO_LIST}"
 		fi
-	elif [ -d "${_BOOT_PATH}/${U_BOOT_FDT_OVERLAYS_DIR}" ]; then
+	elif [ -d "${_BOOT_PATH}/${U_BOOT_FDT_OVERLAYS_DIR}-${_IMG_VERSION}" ]; then
 		_DTBO_LIST=""
 		if [ -n "${U_BOOT_FDT_OVERLAYS}" ]; then
 			for _DTBO in ${U_BOOT_FDT_OVERLAYS}; do
-				if [ -f "${_BOOT_PATH}/${U_BOOT_FDT_OVERLAYS_DIR}/${_DTBO}" ]; then
-					_DTBO_LIST="${_DTBO_LIST} ${U_BOOT_FDT_OVERLAYS_DIR}/${_DTBO}"
+				if [ -f "${_BOOT_PATH}/${U_BOOT_FDT_OVERLAYS_DIR}-${_IMG_VERSION}/${_DTBO}" ]; then
+					_DTBO_LIST="${_DTBO_LIST} ${U_BOOT_FDT_OVERLAYS_DIR}-${_IMG_VERSION}/${_DTBO}"
 				fi
 			done
 		else
-			for _DTBO_PATH in "${_BOOT_PATH}/${U_BOOT_FDT_OVERLAYS_DIR}/"*.dtbo; do
+			for _DTBO_PATH in "${_BOOT_PATH}/${U_BOOT_FDT_OVERLAYS_DIR}-${_IMG_VERSION}/"*.dtbo; do
 				if [ -f "${_DTBO_PATH}" ]; then
 					_DTBO=$(basename "${_DTBO_PATH}")
-					_DTBO_LIST="${_DTBO_LIST} ${U_BOOT_FDT_OVERLAYS_DIR}/${_DTBO}"
+					_DTBO_LIST="${_DTBO_LIST} ${U_BOOT_FDT_OVERLAYS_DIR}-${_IMG_VERSION}/${_DTBO}"
 				fi
 			done
 		fi
@@ -258,7 +259,7 @@ for _KERNEL in ${_KERNELS}; do
 			_FDTOVERLAYS="fdtoverlays ${_DTBO_LIST}"
 		fi
 	fi
-
+	done
 	if echo "${U_BOOT_ALTERNATIVES}" | grep -q default; then
 
 		# Writing default entry
