@@ -15,6 +15,7 @@ Package: u-boot-menu
 Depends:
  linux-base,
  ${misc:Depends},
+ vicharak-config (>= 0.1.7)
 Suggests:
  flash-kernel,
 Architecture: all

@@ -1,3 +1,10 @@
+u-boot-menu (5.0.4) stable; urgency=medium
+
+  [ Devang Kabutarwala ]
+  * Do not thow error even if no matching string found for the Image
+
+ -- vicharak <d.kabutarwala@yahoo.com>  Tue, 19 Nov 2024 14:34:57 +0530
+
 u-boot-menu (5.0.3) stable; urgency=medium
 
   [Pratiksha Thanki]

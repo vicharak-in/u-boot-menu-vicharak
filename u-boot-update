@@ -193,7 +193,7 @@ for _KERNEL in ${_KERNELS}; do
 	for dtb in ${U_BOOT_FDT}; do
 		# Check if the DTB matches the current kernel version
 		_IMG_VERSION=$(echo "${_KERNEL#*-}" | sed 's/-.[a-z]+//')
-		DTB_VERSION=$(echo "${dtb}" | grep -Po '\d+\.\d+\.\d+-[a-z]+')
+		DTB_VERSION=$(echo "$dtb" | sed 's/.*linux-//' | sed 's/\.dtb.*//')
 
 		if [ "$DTB_VERSION" = "$_IMG_VERSION" ]; then
 			if [ -e "${dtb}" ] && [ -n "${dtb}" ] && [ "/" = "$(echo "${dtb}" | head -c1)" ]; then
@@ -237,6 +237,8 @@ for _KERNEL in ${_KERNELS}; do
 					_DTBO_LIST=$(echo "${_DTBO_LIST}" | sed -e "s/\/boot//g")
 				fi
 				_FDTOVERLAYS="fdtoverlays ${_DTBO_LIST}"
+			else
+				_FDTOVERLAYS=""
 			fi
 		elif [ -d "${_BOOT_PATH}/${U_BOOT_FDT_OVERLAYS_DIR}-${_IMG_VERSION}" ]; then
 			_DTBO_LIST=""
