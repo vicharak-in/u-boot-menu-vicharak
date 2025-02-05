@@ -1,3 +1,10 @@
+u-boot-menu (5.0.5) stable; urgency=medium
+
+  [ Devang Kabutarwala ]
+  * Make most latest version of kernel default boot option
+
+ -- vicharak <d.kabutarwala@yahoo.com>  Wed, 05 Feb 2025 15:11:16 +0530
+
 u-boot-menu (5.0.4) stable; urgency=medium
 
   [ Devang Kabutarwala ]
