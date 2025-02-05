@@ -21,7 +21,7 @@ jobs:
       name: setup 
       with:
         arch: aarch64
-        distro: ubuntu20.04
+        distro: ubuntu22.04
         run: |
            apt-get update
            apt install -y debhelper debhelper-compat
