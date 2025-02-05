@@ -128,7 +128,7 @@ timeout ${U_BOOT_TIMEOUT}
 "
 
 # Find linux versions
-_KERNELS=$(find /boot -maxdepth 1 -type f -name "Image*" | sed -e 's,.*/boot/,,g')
+_KERNELS=$(find /boot -maxdepth 1 -type f -name "Image*" | sed -e 's,.*/boot/,,g' | sort -rf)
 
 # Find boot directory as seen in u-boot, and path prefix while in linux
 if [ "$(stat --printf %d /)" = "$(stat --printf %d /boot)" ]; then
